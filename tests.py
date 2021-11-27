@@ -52,6 +52,45 @@ class Test_get_neighbors(unittest.TestCase):
         for r in res:
             self.assertIn(r, out)
 
+    def test_6(self):
+        in_table = tuple([7, 0, 2, 8, 1, 6, 5, 3, 4])
+        out = [([0, 7, 2, 8, 1, 6, 5, 3, 4], 0),
+               ([7, 2, 0, 8, 1, 6, 5, 3, 4], 2),
+               ([7, 1, 2, 8, 0, 6, 5, 3, 4], 4)]
+        res = get_neighbors(in_table, 3, 1)
+        self.assertEqual(len(out), len(res))
+        for r in res:
+            self.assertIn(r, out)
+
+    def test_7(self):
+        in_table = tuple([7, 8, 2, 0, 1, 6, 5, 3, 4])
+        out = [([0, 8, 2, 7, 1, 6, 5, 3, 4], 0),
+               ([7, 8, 2, 1, 0, 6, 5, 3, 4], 4),
+               ([7, 8, 2, 5, 1, 6, 0, 3, 4], 6)]
+        res = get_neighbors(in_table, 3, 3)
+        self.assertEqual(len(out), len(res))
+        for r in res:
+            self.assertIn(r, out)
+
+    def test_8(self):
+        in_table = tuple([7, 8, 2, 5, 1, 6, 0, 3, 4])
+        out = [([7, 8, 2, 0, 1, 6, 5, 3, 4], 3),
+               ([7, 8, 2, 5, 1, 6, 3, 0, 4], 7)]
+        res = get_neighbors(in_table, 3, 6)
+        self.assertEqual(len(out), len(res))
+        for r in res:
+            self.assertIn(r, out)
+
+    def test_9(self):
+        in_table = tuple([7, 8, 2, 5, 1, 6, 3, 0, 4])
+        out = [([7, 8, 2, 5, 0, 6, 3, 1, 4], 4),
+               ([7, 8, 2, 5, 1, 6, 0, 3, 4], 6),
+               ([7, 8, 2, 5, 1, 6, 3, 4, 0], 8)]
+        res = get_neighbors(in_table, 3, 7)
+        self.assertEqual(len(out), len(res))
+        for r in res:
+            self.assertIn(r, out)
+
 
 
 if __name__ == '__main__':
