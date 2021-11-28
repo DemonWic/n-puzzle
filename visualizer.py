@@ -39,7 +39,7 @@ def update(tkinter, canvas, array, puzzle_size, cnt):
                                     BOX_SIZE * y + BOX_SIZE,
                                     fill=get_color(array[cnt], array[len(array) - 1], y * 3 + x))
             canvas.create_text((BOX_SIZE * (x + 1) - BOX_SIZE / 2, BOX_SIZE * (y + 1) - BOX_SIZE / 2),
-                               text=array[cnt][y * 3 + x])
+                               text=array[cnt][y * 3 + x], font=("Courier", 50))
             x += 1
         y += 1
         x = 0
