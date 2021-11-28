@@ -2,6 +2,7 @@ from copy import copy
 from heapq import heappop, heappush
 from itertools import count
 import datetime
+from queue import PriorityQueue
 
 m = [[4, 6, 7],
           [8, 0, 2],
