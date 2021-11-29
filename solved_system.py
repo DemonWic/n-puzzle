@@ -26,3 +26,4 @@ print(is_solved([5, 8, 6, 7, 0, 2, 3, 4, 1]))  # solved
 print(is_solved([8, 1, 3, 4, 5, 2, 0, 7, 6]))  # solved
 print(is_solved([0, 3, 8, 1, 4, 7, 6, 5, 2]))  # solved
 print(is_solved([0, 8, 3, 5, 7, 1, 4, 6, 2]))  # unsolved
+print(is_solved([1, 8, 4, 2, 0, 7, 5, 3, 6]))  # unsolved
