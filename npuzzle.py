@@ -1,6 +1,5 @@
 from copy import copy
 from heapq import heappop, heappush
-from itertools import count
 import datetime
 
 m = [[4, 6, 7],
@@ -68,6 +67,47 @@ def manhattan2(candidate, solved, size):
             res += abs(y) + abs(x)
     return res
 
+
+def a_star_search(src: list, dst: tuple, size: int, heuristic, cost: int = 1):
+    start = datetime.datetime.now()
+    queue = [(0, (tuple(src), src.index(0)), 0, None)]
+    opened = {}
+    closed = {}
+    goal_coord = get_coords(dst, size)
+    while queue:
+        g, node_ind, node_w, parent = heappop(queue)
+        node, idx = node_ind
+        if node == dst:
+            res = [node]
+            while parent is not None:
+                res.append(parent)
+                parent = closed[parent]
+            res.reverse()
+            # end = datetime.datetime.now()
+            # print(end - start)
+            return True, res, len(opened), len(closed)
+        if node in closed:
+            continue
+        closed[node] = parent
+        next_w = node_w + cost
+        neighbors = get_neighbors(node, size, idx)
+        for neighbor, n_idx in neighbors:
+            if neighbor in closed:
+                continue
+            if neighbor in opened:
+                neigh_w, neigh_h = opened[neighbor]
+                if neigh_w <= next_w:
+                    continue
+            else:
+                neigh_h = heuristic(get_coords(neighbor, size), goal_coord)
+
+            opened[neighbor] = next_w, neigh_h
+            heappush(queue, (next_w + neigh_h, (neighbor, n_idx), next_w, node))
+
+    # end = datetime.datetime.now()
+    # print(end - start)
+    return False, [], len(opened), len(closed)
+
 if __name__ == '__main__':
 
     # src = [4, 6, 7, 8, 0, 2, 5, 3, 1]
@@ -86,6 +126,12 @@ if __name__ == '__main__':
     res = get_coords(src, 4)
     res2 = get_coords(dst, 3)
     res3 = get_coords(dst2, 4)
+    status, result, r_space, r_time = a_star_search(src, dst2, 4, manhattan, 1)
+    if status:
+        for x in result:
+            print(x)
+    print(f"space = {r_space}")
+    print(f"time = {r_time}")
     # for num, coord in res.items():
     #     print(f"{num} {coord}")
     # print(">>>>>>>>>")
@@ -106,53 +152,51 @@ if __name__ == '__main__':
     #     print("\n>>>>>>>>>\n")
 
 
-    # countt = count()
-    start = datetime.datetime.now()
-    queue = [(0, (tuple(src), 6), 0, None)]
-    open_set = {}
-    closed = {}
-    cost = 1
-    size = 4
-    # i = 0
-    goal_coord = get_coords(dst2, size)
-    while queue:
-        g, node_ind, node_w, parent = heappop(queue)
-        # i += 1
-        # print(i)
-        node, idx = node_ind
-        if node == dst2:
-            print("NAIDENO!")
-            res = [node]
-            while parent is not None:
-                res.append(parent)
-                parent = closed[parent]
-            res.reverse()
-            print(len(res))
-            for x in res:
-                print(x)
-            break
-        if node in closed:
-            continue
-        closed[node] = parent
-        # with open('log.log', 'a') as f:
-        #     f.write(f"g = {g}, c = {c}, node = {node}\n")
-        next_w = node_w + cost
-        neighbors = get_neighbors(node, size, idx)
-        for neighbor, n_idx in neighbors:
-            if neighbor in closed:
-                continue
-            if neighbor in open_set:
-                neigh_w, neigh_h = open_set[neighbor]
-                if neigh_w <= next_w:
-                    continue
-            else:
-                neigh_h = manhattan(get_coords(neighbor, size), goal_coord)
-
-            open_set[neighbor] = next_w, neigh_h
-            heappush(queue, (next_w + neigh_h, (neighbor, n_idx), next_w, node))
-
-    end = datetime.datetime.now()
-    print(end - start)
-    print("VSE GOVNO")
+    # start = datetime.datetime.now()
+    # queue = [(0, (tuple(src), 6), 0, None)]
+    # open_set = {}
+    # closed = {}
+    # cost = 1
+    # size = 4
+    # goal_coord = get_coords(dst2, size)
+    # while queue:
+    #     g, node_ind, node_w, parent = heappop(queue)
+    #     # i += 1
+    #     # print(i)
+    #     node, idx = node_ind
+    #     if node == dst2:
+    #         print("NAIDENO!")
+    #         res = [node]
+    #         while parent is not None:
+    #             res.append(parent)
+    #             parent = closed[parent]
+    #         res.reverse()
+    #         print(len(res))
+    #         for x in res:
+    #             print(x)
+    #         break
+    #     if node in closed:
+    #         continue
+    #     closed[node] = parent
+    #     # with open('log.log', 'a') as f:
+    #     #     f.write(f"g = {g}, c = {c}, node = {node}\n")
+    #     next_w = node_w + cost
+    #     neighbors = get_neighbors(node, size, idx)
+    #     for neighbor, n_idx in neighbors:
+    #         if neighbor in closed:
+    #             continue
+    #         if neighbor in open_set:
+    #             neigh_w, neigh_h = open_set[neighbor]
+    #             if neigh_w <= next_w:
+    #                 continue
+    #         else:
+    #             neigh_h = manhattan(get_coords(neighbor, size), goal_coord)
+    #
+    #         open_set[neighbor] = next_w, neigh_h
+    #         heappush(queue, (next_w + neigh_h, (neighbor, n_idx), next_w, node))
+    #
+    # end = datetime.datetime.now()
+    # print(end - start)
+    # print("VSE GOVNO")
 
 
