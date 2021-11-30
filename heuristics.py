@@ -41,7 +41,7 @@ def linear(src: dict, dst: dict, size: int) -> int:
             ans += 1
             return conflict_count(candidate_row, solved_row, size, ans)
 
-    res = manhattan(src, dst)
+    res = manhattan(src, dst, size)
     buf = [0 for x in range(size)]
     src_rows = [deepcopy(buf) for y in range(size)]
     src_columns = [deepcopy(buf) for x in range(size)]
