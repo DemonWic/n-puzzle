@@ -14,13 +14,26 @@ def is_solved(puzzle, size, solved):
             if solved.index(n1) > solved.index(n2):
                 res += 1
                 # print("res")
-
             i2 += 1
         i += 1
     # if res % 2 == 0 => get_solved else unsolved
+
+    # res += get_zero_sol(puzzle, size)
     print("res: ", res)
 
-    res += get_zero_sol(puzzle, size)
+    puzzle_zero_row = puzzle.index(0) // size
+    puzzle_zero_column = puzzle.index(0) % size
+    solved_zero_row = solved.index(0) // size
+    solved_zero_column = solved.index(0) % size
+    taxicab = abs(puzzle_zero_row - solved_zero_row) + abs(puzzle_zero_column - solved_zero_column)
+
+    gg = get_zero_sol(puzzle, size)
+
+    if taxicab % 2 == 0 and res % 2 == 0:
+        return True
+    if taxicab % 2 == 1 and res % 2 == 1:
+        return True
+    return False
 
     return res % 2 == 0
 
