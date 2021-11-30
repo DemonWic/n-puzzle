@@ -1,7 +1,7 @@
 import argparse
 import sys
 
-from solved_system import is_solved, get_solved
+from solved_system import is_solved, get_solved, get_zero_sol
 
 
 def validate_table(filename):

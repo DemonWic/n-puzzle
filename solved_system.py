@@ -2,30 +2,26 @@ def is_solved(puzzle, size, solved):
     i = 0
     res = 0
     while i < len(puzzle):
-        # if zero auto res++
-        print("=>", i, "<=")
-        if puzzle[i] == 0:
-            temp = i
-            while temp > 0:
-                temp -= size
-                res += 1
-                print("res/")
-            i += 1
-            continue
         # if last box break while
         i2 = i + 1
         if i2 >= len(puzzle):
             break
         # if i > i2 res++
         while i2 < len(puzzle):
-            if solved[puzzle[i]] > solved[puzzle[i2]]:
+            n1 = puzzle[i]
+            n2 = puzzle[i2]
+
+            if solved.index(n1) > solved.index(n2):
                 res += 1
-                print("res")
+                # print("res")
 
             i2 += 1
         i += 1
     # if res % 2 == 0 => get_solved else unsolved
-    print(res)
+    print("res: ", res)
+
+    res += get_zero_sol(puzzle, size)
+
     return res % 2 == 0
 
 
@@ -57,12 +53,26 @@ def get_solved(size):
             num += 1
             fail = 0
 
-    # print("fail: ", fail)
-    # print(sol)
-    # print(size * size)
-    print(sum(sol, []))
-    return sum(sol, [])
+    print(list(sum(sol, [])))
+    return list(sum(sol, []))
 
+
+def get_zero_sol(puzzle, size):
+    res = 0
+    temp = 0
+    i = 0
+    while i < len(puzzle):
+        if puzzle[i] == 0:
+            temp = i
+            # print("res-temp: ", temp)
+            break
+        i += 1
+    while temp > 0:
+        temp -= size
+        res += 1
+    # print("res - zero: ", res)
+
+    return res
 
 # get_solved(3)
 # get_solved(4)
