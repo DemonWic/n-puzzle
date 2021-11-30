@@ -1,52 +1,60 @@
 import argparse
 import sys
+from npuzzle import a_star_search
+from heuristics import get_heuristic
 
 from solved_system import is_solved, get_solved, get_zero_sol
 
 
 def validate_table(filename):
-	size = 0
-	res = []
-	try:
-		buf = []
-		with open(filename, 'r') as f:
-			for line in f:
-				if "#" not in line:
-					buf.append(line.strip())
+    size = 0
+    res = []
+    try:
+        buf = []
+        with open(filename, 'r') as f:
+            for line in f:
+                if "#" not in line:
+                    buf.append(line.strip())
 
-		if not (buf[0].isdecimal() and int(buf[0]) >= 0):
-			raise Exception("Not valid start table: size not valid number")
-		size = int(buf[0])
-		for row in buf[1:]:
-			for num in [x.strip() for x in row.split()]:
-				if not (num.isdecimal() and int(num) >= 0):
-					raise Exception("Not valid start table: not valid number in table")
-				res.append(int(num))
+        if not (buf[0].isdecimal() and int(buf[0]) >= 0):
+            raise Exception("Not valid start table: size not valid number")
+        size = int(buf[0])
+        for row in buf[1:]:
+            for num in [x.strip() for x in row.split()]:
+                if not (num.isdecimal() and int(num) >= 0):
+                    raise Exception("Not valid start table: not valid number in table")
+                res.append(int(num))
 
-		if len(res) != size ** 2:
-			raise Exception("Not valid start table: the size does not match the table")
-		return True, size, res
-	except Exception as e:
-		print(str(e), file=sys.stderr)
-		return False, size, res
+        if len(res) != size ** 2:
+            raise Exception("Not valid start table: the size does not match the table")
+        return True, size, res
+    except Exception as e:
+        print(str(e), file=sys.stderr)
+        return False, size, res
 
 
 if __name__ == '__main__':
-	parser = argparse.ArgumentParser()
-	parser.add_argument('filename', type=str, help="filename with start table")
-	parser.add_argument("-H", "--heuristic", type=str, help="heuristic for algorithm, default - manhattan",
-						choices=['manhattan', 'hamming', 'linear'], default='manhattan')
+    parser = argparse.ArgumentParser()
+    parser.add_argument('filename', type=str, help="filename with start table")
+    parser.add_argument("-H", "--heuristic", type=str, help="heuristic for algorithm, default - manhattan",
+                        choices=['manhattan', 'hamming', 'linear'], default='manhattan')
 
-	args = parser.parse_args()
+    args = parser.parse_args()
 
-	v_res, t_size, table = validate_table(args.filename)
+    v_res, t_size, table = validate_table(args.filename)
 
-	print(table)
+    print(table)
 
-	if is_solved(table, t_size, get_solved(t_size)):
-		print("solved")
-	else:
-		print("unsolved")
+    if is_solved(table, t_size, get_solved(t_size)):
+        print("solved")
+    else:
+        print("unsolved")
 
-	if not v_res:
-		sys.exit(1)
+    if not v_res:
+        sys.exit(1)
+
+    func = get_heuristic(args.heuristic)
+    dst = () # конечное состояние - tuple
+    status, result, r_space, r_time = a_star_search(table, dst, t_size, func, 1)
+
+
