@@ -2,8 +2,8 @@ import argparse
 import sys
 from npuzzle import a_star_search
 from heuristics import get_heuristic
-
-from solved_system import is_solved, get_solved, get_zero_sol
+from solved_system import is_solved, get_solved
+from visualizer import visualuzation
 
 
 def validate_table(filename):
@@ -36,6 +36,7 @@ def validate_table(filename):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('filename', type=str, help="filename with start table")
+    parser.add_argument("-g", "--graphic", help="on graphic mode", action="store_true")
     parser.add_argument("-H", "--heuristic", type=str, help="heuristic for algorithm, default - manhattan",
                         choices=['manhattan', 'hamming', 'linear'], default='manhattan')
 
@@ -43,18 +44,27 @@ if __name__ == '__main__':
 
     v_res, t_size, table = validate_table(args.filename)
 
-    print(table)
-
     if is_solved(table, t_size, get_solved(t_size)):
-        print("solved")
+        print("solvable")
     else:
-        print("unsolved")
+        print("unsolvable")
+        sys.exit(1)
 
     if not v_res:
         sys.exit(1)
 
     func = get_heuristic(args.heuristic)
-    dst = () # конечное состояние - tuple
-    status, result, r_space, r_time = a_star_search(table, dst, t_size, func, 1)
+    dst = get_solved(t_size)
+    status, result, r_space, r_time = a_star_search(table, tuple(dst), t_size, func, 1)
+    if not status:
+        print("unsolvable")
+    elif args.graphic:
+        visualuzation(result, t_size)
+    else:
+        for x in result:
+            print(x)
+        print(f"space complexity: {r_space} nodes in memory")
+        print(f"time complexity: {r_time} evaluated nodes")
+
 
 

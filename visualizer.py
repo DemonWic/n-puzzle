@@ -5,12 +5,14 @@ COLOR_BACK = '#E0ffff'
 INFINITY = False
 SPEED = 500  # ms
 
+
 def visualuzation(array, puzzle_size):
     cnt = 0
-    for ar in array:
-        print(ar)
+    # for ar in array:
+    #     print(ar)
     # заводим ткинтер
     tkinter = Tk()
+    tkinter.title("n-puzzle")
     # размер окна
     size = (BOX_SIZE * puzzle_size)
     # создание окна для вывода изображения
@@ -45,8 +47,10 @@ def update(tkinter, canvas, array, puzzle_size, cnt):
         x = 0
     cnt += 1
 
-    tkinter.after(SPEED, update, tkinter, canvas, array, puzzle_size, cnt)
+    if cnt < len(array):
+        tkinter.after(SPEED, update, tkinter, canvas, array, puzzle_size, cnt)
     canvas.update()
+
 
 def get_color(cur, last, id):
     if cur[id] == 0:
@@ -56,26 +60,7 @@ def get_color(cur, last, id):
     else:
         return 'black'
 
+
 def ex(event):
     exit(0)
 
-
-array = [[7, 8, 4, 3, 1, 5, 6, 2, 0],
-         [7, 8, 4, 3, 1, 0, 6, 2, 5],
-         [7, 8, 4, 3, 0, 1, 6, 2, 5],
-         [7, 8, 4, 0, 3, 1, 6, 2, 5],
-         [0, 8, 4, 7, 3, 1, 6, 2, 5],
-         [8, 0, 4, 7, 3, 1, 6, 2, 5],
-         [8, 3, 4, 7, 0, 1, 6, 2, 5],
-         [8, 3, 4, 7, 1, 0, 6, 2, 5],
-         [8, 3, 0, 7, 1, 4, 6, 2, 5],
-         [8, 0, 3, 7, 1, 4, 6, 2, 5],
-         [8, 1, 3, 7, 0, 4, 6, 2, 5],
-         [8, 1, 3, 7, 2, 4, 6, 0, 5],
-         [8, 1, 3, 7, 2, 4, 0, 6, 5],
-         [8, 1, 3, 0, 2, 4, 7, 6, 5],
-         [0, 1, 3, 8, 2, 4, 7, 6, 5],
-         [1, 0, 3, 8, 2, 4, 7, 6, 5],
-         [1, 2, 3, 8, 0, 4, 7, 6, 5]]
-
-visualuzation(array, 3)

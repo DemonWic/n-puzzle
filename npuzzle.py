@@ -62,7 +62,7 @@ def a_star_search(src: list, dst: tuple, size: int, heuristic, cost: int = 1):
                 if neigh_w <= next_w:
                     continue
             else:
-                neigh_h = heuristic(get_coords(neighbor, size), goal_coord)
+                neigh_h = heuristic(get_coords(neighbor, size), goal_coord, size)
 
             opened[neighbor] = next_w, neigh_h
             heappush(queue, (next_w + neigh_h, (neighbor, n_idx), next_w, node))
