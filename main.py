@@ -44,13 +44,13 @@ if __name__ == '__main__':
 
     v_res, t_size, table = validate_table(args.filename)
 
+    if not v_res:
+        sys.exit(1)
+
     if is_solved(table, t_size, get_solved(t_size)):
         print("solvable")
     else:
         print("unsolvable")
-        sys.exit(1)
-
-    if not v_res:
         sys.exit(1)
 
     func = get_heuristic(args.heuristic)
