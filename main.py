@@ -1,6 +1,8 @@
 import argparse
 import sys
 
+from solved_system import is_solved, get_solved
+
 
 def validate_table(filename):
 	size = 0
@@ -38,5 +40,13 @@ if __name__ == '__main__':
 	args = parser.parse_args()
 
 	v_res, t_size, table = validate_table(args.filename)
+
+	print(table)
+
+	if is_solved(table, t_size, get_solved(t_size)):
+		print("solved")
+	else:
+		print("unsolved")
+
 	if not v_res:
 		sys.exit(1)
