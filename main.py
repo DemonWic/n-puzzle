@@ -27,6 +27,9 @@ def validate_table(filename):
 
         if len(res) != size ** 2:
             raise Exception("Not valid start table: the size does not match the table")
+        table_set = set(res)
+        if len(table_set) < size ** 2:
+            raise Exception("Not valid start table: repeating numbers")
         return True, size, res
     except Exception as e:
         print(str(e), file=sys.stderr)
