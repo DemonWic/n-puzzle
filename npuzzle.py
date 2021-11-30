@@ -1,6 +1,5 @@
 from copy import copy
 from heapq import heappop, heappush
-import datetime
 
 
 def get_neighbors(table, size, index):
@@ -32,7 +31,6 @@ def get_coords(lst, size):
 
 
 def a_star_search(src: list, dst: tuple, size: int, heuristic, cost: int = 1):
-    start = datetime.datetime.now()
     queue = [(0, (tuple(src), src.index(0)), 0, None)]
     opened = {}
     closed = {}
@@ -46,8 +44,6 @@ def a_star_search(src: list, dst: tuple, size: int, heuristic, cost: int = 1):
                 res.append(parent)
                 parent = closed[parent]
             res.reverse()
-            # end = datetime.datetime.now()
-            # print(end - start)
             return True, res, len(opened), len(closed)
         if node in closed:
             continue
@@ -67,6 +63,4 @@ def a_star_search(src: list, dst: tuple, size: int, heuristic, cost: int = 1):
             opened[neighbor] = next_w, neigh_h
             heappush(queue, (next_w + neigh_h, (neighbor, n_idx), next_w, node))
 
-    # end = datetime.datetime.now()
-    # print(end - start)
     return False, [], len(opened), len(closed)
